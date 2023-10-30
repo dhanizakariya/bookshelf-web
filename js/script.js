@@ -14,6 +14,8 @@ window.addEventListener("DOMContentLoaded", () => {
   if (isStorageExist()) {
     loadDataFromStorage();
   }
+
+  maxYear();
 });
 
 document.addEventListener(RENDER_EVENT, function () {
@@ -24,10 +26,8 @@ document.addEventListener(RENDER_EVENT, function () {
   finished.innerHTML = "";
   for (const bookItem of books) {
     const bookElement = makeBook(bookItem);
-    console.log(bookItem.isComplete);
     if (!bookItem.isComplete) {
       unFinished.append(bookElement);
-      console.log("book add");
     } else {
       finished.append(bookElement);
     }
@@ -36,7 +36,9 @@ document.addEventListener(RENDER_EVENT, function () {
 
 document.getElementById("search").addEventListener("submit", function (event) {
   event.preventDefault();
-  const searchBook = document.getElementById("search-title").value.toLowerCase();
+  const searchBook = document
+    .getElementById("search-title")
+    .value.toLowerCase();
   const bookList = document.querySelectorAll(".card-title");
   for (buku of bookList) {
     if (buku.innerText.toLowerCase().includes(searchBook)) {
@@ -47,45 +49,14 @@ document.getElementById("search").addEventListener("submit", function (event) {
   }
 });
 
-// document.getElementById("search").addEventListener("submit", function (event) {
-//   event.preventDefault();
-//   const searchBook = document
-//     .getElementById("search-title")
-//     .value.toLowerCase();
-//   const bookList = books.filter((book) =>
-//     book.title.toLowerCase().includes(searchBook)
-//   );
-//   renderBooks(bookList);
-// });
-
-// function renderBooks(booksToRender) {
-//   console.log(booksToRender);
-
-//   const unFinished = document.getElementById("unfinished");
-//   unFinished.innerHTML = "";
-//   const finished = document.getElementById("finished");
-//   finished.innerHTML = "";
-//   for (const bookItem of booksToRender) {
-//     const bookElement = makeBook(bookItem);
-//     console.log(bookItem.isComplete);
-//     if (!bookItem.isComplete) {
-//       unFinished.append(bookElement);
-//       console.log("book add");
-//     } else {
-//       finished.append(bookElement);
-//     }
-//   }
-// }
-
 function addBook() {
   const title = document.getElementById("title");
   const author = document.getElementById("author");
-  const year = document.getElementById("year");
+  const year = document.getElementById("published-year");
   const isComplete = document.querySelector("#isComplete");
-  const firstNumberOfYear = year.value.split()[0];
+  const firstNumberOfYear = year.value.split('')[0];
   if (title.value != "" && author.value != "" && year.value != "") {
     if (firstNumberOfYear != 0) {
-      //   const book = makeBook(books)
       const bookObject = generateBookObject(
         title.value,
         author.value,
@@ -93,17 +64,56 @@ function addBook() {
         isComplete.checked
       );
 
-      // book[BOOK_ID] = bookObject.id;
       books.push(bookObject);
-
-      // unFinished.append(book);
-
       document.dispatchEvent(new Event(RENDER_EVENT));
       saveData();
       console.log("books added");
+
+      Swal.fire({
+				title: 'Success!',
+				text: 'Book added to the shelf!',
+				icon: 'success',
+				confirmButtonText: 'OK',
+				buttonsStyling: false,
+				customClass: {
+					confirmButton: 'btn finished-btn swal-btn',
+				},
+			});
     }
+    else{
+      Swal.fire({
+				title: 'Invalid Input',
+				text: 'Published year first number cannot be 0',
+				icon: 'warning',
+				confirmButtonText: 'OK',
+				buttonsStyling: false,
+				customClass: {
+					confirmButton: 'btn finished-btn swal-btn',
+				},
+			});
+    }
+  }else{
+    Swal.fire({
+			title: 'Empty Field',
+			text: 'Please fill out the form',
+			icon: 'warning',
+			confirmButtonText: 'OK',
+			buttonsStyling: false,
+			customClass: {
+				confirmButton: 'btn finished-btn swal-btn',
+			},
+		});
   }
 }
+
+const maxYear = () => {
+	const publishedInput = document.getElementById('published-year');
+	const date = new Date();
+	const year = date.getFullYear();
+
+	publishedInput.setAttribute('min', 0);
+	publishedInput.setAttribute('max', year);
+};
 
 function generateBookObject(title, author, year, isComplete) {
   return {
@@ -117,10 +127,10 @@ function generateBookObject(title, author, year, isComplete) {
 
 function makeBook(bookObject) {
   const container = document.createElement("div");
-  container.classList.add("card", "book-detail", "mt-3");
-  container.innerHTML = `<h5 class="card-title">${bookObject.title}</h5>
-                        <div class="author">Author: ${bookObject.author}</div>
-                        <div class="year">Tahun Terbit: ${bookObject.year}</div>`;
+  container.classList.add("card", "book-detail", "mt-4");
+  container.innerHTML = `<h4 class="card-title">${bookObject.title}</h4>
+                        <div class="author">Author      : ${bookObject.author}</div>
+                        <div class="year">Tahun Terbit  : ${bookObject.year}</div>`;
   const btnContainer = document.createElement("div");
   btnContainer.classList.add(
     "btn-container",
@@ -129,13 +139,11 @@ function makeBook(bookObject) {
     "gap-3",
     "justify-content-end"
   );
-  // console.log("success");
   if (!bookObject.isComplete) {
     btnContainer.append(
       unfinishedButton(bookObject.id),
       removeButton(bookObject.id)
     );
-    console.log("tombol");
   } else {
     btnContainer.append(
       finishedButton(bookObject.id),
@@ -148,13 +156,12 @@ function makeBook(bookObject) {
 
 function unfinishedButton(bookID) {
   const button = document.createElement("button");
-  button.classList.add("btn", "btn-primary");
+  button.classList.add("btn", "finish-btn", "btn-primary");
 
   button.innerText = `Selesai Dibaca`;
 
   button.addEventListener("click", function () {
     moveToFinished(bookID);
-    console.log("Finished");
   });
 
   return button;
@@ -162,7 +169,7 @@ function unfinishedButton(bookID) {
 
 function finishedButton(bookID) {
   const button = document.createElement("button");
-  button.classList.add("btn", "btn-primary");
+  button.classList.add("btn", "unfinish-btn", "btn-primary");
 
   button.innerText = `Belum Dibaca`;
 
@@ -175,7 +182,7 @@ function finishedButton(bookID) {
 
 function removeButton(bookID) {
   const button = document.createElement("button");
-  button.classList.add("btn", "btn-danger");
+  button.classList.add("btn", "delete-btn","btn-danger");
 
   button.innerText = `Hapus Buku`;
 
