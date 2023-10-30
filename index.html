@@ -1,0 +1,108 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <!-- Required meta tags -->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+  <link rel="stylesheet" href="css/style.css">
+
+  <script src="https://kit.fontawesome.com/f40798ee08.js" crossorigin="anonymous"></script>
+
+  <title>Bookshelf</title>
+</head>
+
+<body>
+  <nav class="navbar navbar-dark" style="background-color: #5F30E2; padding: 1rem;">
+    <div class="container">
+      <span class="navbar-brand mb-0 h1">Bookshelf</span>
+    </div>
+  </nav>
+
+  <section class="add-book p-5">
+    <div class="container">
+      <h2>Tambahkan Buku</h2>
+      <form id="add-book-form">
+        <div class="mb-3">
+          <label for="title" class="form-label">Book Title</label>
+          <input type="text" class="form-control" id="title">
+        </div>
+        <div class="mb-3">
+          <label for="author" class="form-label">Book Author</label>
+          <input type="text" class="form-control" id="author">
+        </div>
+        <div class="mb-3">
+          <label for="year" class="form-label">Published Year</label>
+          <input type="text" class="form-control" id="year">
+        </div>
+        <div class="mb-3 form-check">
+          <input type="checkbox" class="form-check-input" id="isComplete">
+          <label class="form-check-label" for="check">Sudah dibaca</label>
+        </div>
+        <div class="d-grid gap-2 col-6 mx-auto">
+          <button type="submit" class="btn btn-primary">Add Book</button>
+        </div>
+      </form>
+    </div>
+  </section>
+
+  <section class="search-book p-5">
+    <div class="container">
+      <h2>Search Book</h2>
+      <form id="search" class="d-flex">
+        <input type="text" class="form-control" id="search-title">
+        <button type="submit" class="btn search-btn ms-4">
+          <i class="fas fa-search"></i>
+        </button>
+      </form>
+    </div>
+  </section>
+
+  <section class="book-container p-5">
+    <div class="container">
+      <div class="row gap-5">
+        <div class="col-lg col-md-12">
+          <h2>Belum Dibaca</h2>
+          <div id="unfinished">
+            <div class="card book-detail mt-3">
+              <h5 class='card-title title'>Judul Buku</h5>
+              <div class="author">Author: xxxxx</div>
+              <div class="year">Tahun Terbit: xxxx</div>
+              <div class="btn-container action d-flex gap-3 justify-content-end">
+                <button type="submit" class="btn btn-primary">Sudah Dibaca</button>
+                <button type="submit" class="btn btn-danger">Hapus Buku</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-lg col-md-12 ">
+          <h2>Sudah Dibaca</h2>
+          <div id="finished">
+            <!-- <div class="card book-detail mt-3">
+              <h5 class='card-title title'>Judul Buku</h5>
+              <div class="author">Author: xxxxx</div>
+              <div class="year">Tahun Terbit: xxxx</div>
+              <div class="btn-container action d-flex gap-3 justify-content-end">
+                <button type="submit" class="btn btn-primary">Sudah Dibaca</button>
+                <button type="submit" class="btn btn-danger">Hapus Buku</button>
+              </div> -->
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+
+  <!-- Option 1: Bootstrap Bundle with Popper -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
+    crossorigin="anonymous"></script>
+  <script src="js/script.js"></script>
+</body>
+
+</html>
